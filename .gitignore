@@ -3,3 +3,13 @@
 ################################################################################
 
 /.vs/xLiAd.SqlEx
+/xLiAd.SqlEx.Core/bin/Debug/netstandard2.0
+/xLiAd.SqlEx.Core/obj
+/xLiAd.SqlEx.Repository/bin/Debug/netstandard2.0
+/xLiAd.SqlEx.Repository/obj
+/xLiAd.SqlEx.RepositoryMsSql/bin/Debug/netstandard2.0
+/xLiAd.SqlEx.RepositoryMsSql/obj
+/xLiAd.SqlEx.RepositoryMySql/bin/Debug/netstandard2.0
+/xLiAd.SqlEx.RepositoryMySql/obj
+/xLiAd.SqlEx.RepsotiroyMySql.Test/bin/Debug/netcoreapp3.0
+/xLiAd.SqlEx.RepsotiroyMySql.Test/obj

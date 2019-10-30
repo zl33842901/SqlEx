@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xLiAd.SqlEx.Core", "xLiAd.SqlEx.Core\xLiAd.SqlEx.Core.csproj", "{A7FCA60A-D335-4C78-8551-C8C41649DD39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xLiAd.SqlEx.Repository", "xLiAd.SqlEx.Repository\xLiAd.SqlEx.Repository.csproj", "{F9FA78C4-B3CE-4D01-96F7-2C2533A85498}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xLiAd.SqlEx.RepositoryMsSql", "xLiAd.SqlEx.RepositoryMsSql\xLiAd.SqlEx.RepositoryMsSql.csproj", "{B77B3816-D03B-41F8-B086-DC0ECE7597DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xLiAd.SqlEx.RepositoryMySql", "xLiAd.SqlEx.RepositoryMySql\xLiAd.SqlEx.RepositoryMySql.csproj", "{CB99A3C5-284F-447A-BBB9-914981CE77DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5749B88B-2B38-407D-A615-62DA6048CB85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xLiAd.SqlEx.RepsotiroyMySql.Test", "xLiAd.SqlEx.RepsotiroyMySql.Test\xLiAd.SqlEx.RepsotiroyMySql.Test.csproj", "{4B4D1F41-934C-46EB-B1B8-09ADE05E6A3F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7FCA60A-D335-4C78-8551-C8C41649DD39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7FCA60A-D335-4C78-8551-C8C41649DD39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7FCA60A-D335-4C78-8551-C8C41649DD39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7FCA60A-D335-4C78-8551-C8C41649DD39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9FA78C4-B3CE-4D01-96F7-2C2533A85498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9FA78C4-B3CE-4D01-96F7-2C2533A85498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9FA78C4-B3CE-4D01-96F7-2C2533A85498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9FA78C4-B3CE-4D01-96F7-2C2533A85498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B77B3816-D03B-41F8-B086-DC0ECE7597DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B77B3816-D03B-41F8-B086-DC0ECE7597DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B77B3816-D03B-41F8-B086-DC0ECE7597DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B77B3816-D03B-41F8-B086-DC0ECE7597DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB99A3C5-284F-447A-BBB9-914981CE77DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB99A3C5-284F-447A-BBB9-914981CE77DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB99A3C5-284F-447A-BBB9-914981CE77DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB99A3C5-284F-447A-BBB9-914981CE77DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B4D1F41-934C-46EB-B1B8-09ADE05E6A3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B4D1F41-934C-46EB-B1B8-09ADE05E6A3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B4D1F41-934C-46EB-B1B8-09ADE05E6A3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B4D1F41-934C-46EB-B1B8-09ADE05E6A3F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4B4D1F41-934C-46EB-B1B8-09ADE05E6A3F} = {5749B88B-2B38-407D-A615-62DA6048CB85}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {884107AB-D95A-4BC5-8A34-38CE8CCCB61B}
+	EndGlobalSection
+EndGlobal

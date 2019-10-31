@@ -13,3 +13,6 @@
 /xLiAd.SqlEx.RepositoryMySql/obj
 /xLiAd.SqlEx.RepsotiroyMySql.Test/bin/Debug/netcoreapp3.0
 /xLiAd.SqlEx.RepsotiroyMySql.Test/obj
+/.vs
+/xLiAd.SqlEx.RepositoryMsSql.Test/bin/Debug/netcoreapp3.0
+/xLiAd.SqlEx.RepositoryMsSql.Test/obj

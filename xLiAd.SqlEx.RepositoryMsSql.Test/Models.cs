@@ -4,14 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace xLiAd.SqlEx.RepsotiroyMySql.Test
+namespace xLiAd.SqlEx.RepositoryMsSql.Test
 {
-    public class member
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime? TestTime { get; set; }
-    }
     [Table("DictInfo")]
     public class DictInfo
     {
@@ -29,8 +23,8 @@ namespace xLiAd.SqlEx.RepsotiroyMySql.Test
         /// 只读属性自动 NotMapped
         /// </summary>
         public string DictName2 => DictName;
-        [NoUpdate]
-        public DateTime CreateTime { get; set; }
+        [NoUpdate, AutoDateTimeWhenInsert]
+        public DateTime? CreateTime { get; set; }
         public bool Deleted { get; set; }
         /// <summary>
         /// 支持枚举属性
@@ -53,8 +47,16 @@ namespace xLiAd.SqlEx.RepsotiroyMySql.Test
         optionA = 1,
         optionB = 2
     }
-
-
+    [Table("DictInfo")]
+    public class DictInfo2
+    {
+        [Identity]
+        [Key]
+        public int? DictID { get; set; }
+        public string DictName { get; set; }
+        public OrderEnum OrderNum { get; set; }
+        public int DictType { get; set; }
+    }
     public class TestStamp
     {
         [Key]
@@ -69,21 +71,22 @@ namespace xLiAd.SqlEx.RepsotiroyMySql.Test
         public long ROWVERSION { get; set; }
     }
 
-    public class TestTimeStamp
+    public class Articles
     {
-        [Key]
         [Identity]
+        [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime CreateTime { get; set; }
+        public string Title { get; set; }
+        public int DictID { get; set; }
+        [NotMapped]
+        public string DictName { get; set; }
     }
-    [Table("TestTimeStamp")]
-    public class TestTimeStamp2
+    public class Author
     {
-        [Key]
         [Identity]
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime? CreateTime { get; set; }
+        public int AId { get; set; }
     }
 }

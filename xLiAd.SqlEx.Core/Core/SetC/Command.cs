@@ -221,7 +221,7 @@ namespace xLiAd.SqlEx.Core.Core.SetC
             {
                 SqlProvider.SetAutoDateTime(item);
             }
-            var rst = DbCon.ExecuteNonQuery(SqlProvider.SqlString, entitys, _dbTransaction);
+            var rst = DbCon.Execute(SqlProvider.SqlString, entitys, _dbTransaction);
             return rst;
         }
         #endregion
@@ -244,7 +244,7 @@ namespace xLiAd.SqlEx.Core.Core.SetC
         {
             try
             {
-                return DbCon.ExecuteNonQuery(sqlString, param, dbTransaction);
+                return DbCon.Execute(sqlString, param, dbTransaction);
             }
             catch (Exception e)
             {

@@ -42,6 +42,10 @@ namespace xLiAd.SqlEx.Repository
         /// </summary>
         protected abstract ISqlDialect Dialect { get; }
         /// <summary>
+        /// 类型转换器
+        /// </summary>
+        public static ITypeMapper TypeMapper = new TypeMapper();
+        /// <summary>
         /// 初始化仓储
         /// </summary>
         /// <param name="_con">数据库连接串</param>
@@ -1077,7 +1081,16 @@ namespace xLiAd.SqlEx.Repository
         public virtual async Task<TResult> GetScalarAsync<TResult>(string sql, Dictionary<string, string> dic = null)
         {
             DynamicParameters param = ConvertDicToParam(dic, null, out string _);
-            return await con.ExecuteScalarAsync<TResult>(sql, param, transaction: DbTransaction);
+            var reader = await con.ExecuteReaderAsync(sql, param, transaction: DbTransaction);
+            var Parser = TypeConvert.GetSerializer<TResult>(TypeMapper, reader);
+            if (reader.Read())
+            {
+                var result = Parser(reader);
+                reader.Close();
+                return result;
+            }
+            else
+                return default;
         }
         /// <summary>
         /// 执行查询 返回第一条结果
@@ -1089,7 +1102,16 @@ namespace xLiAd.SqlEx.Repository
         public virtual TResult GetScalar<TResult>(string sql, Dictionary<string, string> dic = null)
         {
             DynamicParameters param = ConvertDicToParam(dic, null, out string _);
-            return SqlEx.Core.SqlMapper.ExecuteScalar<TResult>(con, sql, param, transaction: DbTransaction);
+            var reader = con.ExecuteReader(sql, param, transaction: DbTransaction);
+            var Parser = TypeConvert.GetSerializer<TResult>(TypeMapper, reader);
+            if (reader.Read())
+            {
+                var result = Parser(reader);
+                reader.Close();
+                return result;
+            }
+            else
+                return default;
         }
         #endregion
         #region QueryBySql
@@ -1107,7 +1129,18 @@ namespace xLiAd.SqlEx.Repository
             {
                 param = ConvertDicToParam(paramDic, null, out string _);
             }
-            return await con.QueryAsync<TResult>(sql, param, commandType: cmdType, transaction: DbTransaction);
+            var reader = await con.ExecuteReaderAsync(sql, param, commandType: cmdType, transaction: DbTransaction);
+            return ReaderToResult<TResult>(reader);
+        }
+        protected virtual List<TResult> ReaderToResult<TResult>(IDataReader reader)
+        {
+            var Parser = TypeConvert.GetSerializer<TResult>(TypeMapper, reader);
+            var result = new List<TResult>();
+            while (reader.Read())
+            {
+                result.Add(Parser(reader));
+            }
+            return result;
         }
         /// <summary>
         /// 根据SQL语句，或存储过程 查询实体
@@ -1123,7 +1156,8 @@ namespace xLiAd.SqlEx.Repository
             {
                 param = ConvertDicToParam(paramDic, null, out string _);
             }
-            return con.ExecuteQuery<TResult>(sql, param, commandType: cmdType, transaction: DbTransaction);
+            var reader = con.ExecuteReader(sql, param, commandType: cmdType, transaction: DbTransaction);
+            return ReaderToResult<TResult>(reader);
         }
         #endregion
         /// <summary>

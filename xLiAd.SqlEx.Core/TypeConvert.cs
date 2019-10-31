@@ -87,7 +87,7 @@ namespace xLiAd.SqlEx.Core
             {
                 names[i] = record.GetName(i);
             }
-            var key = new SerializerKey(typeof(T), names.Length == 1 ? null : names);
+            var key = new SerializerKey(typeof(T), names.Length == 1 ? names : names);
             _serializers.TryGetValue(key, out object handler);
             if (handler == null)
             {

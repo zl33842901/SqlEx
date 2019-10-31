@@ -16,3 +16,16 @@
 /.vs
 /xLiAd.SqlEx.RepositoryMsSql.Test/bin/Debug/netcoreapp3.0
 /xLiAd.SqlEx.RepositoryMsSql.Test/obj
+/xLiAd.SqlEx.Core/bin/Release/netstandard2.0
+/xLiAd.SqlEx.Core/nupkgs
+/xLiAd.SqlEx.Core/nupkgsSymb
+*.bat
+/xLiAd.SqlEx.Repository/bin/Release/netstandard2.0
+/xLiAd.SqlEx.Repository/nupkgs
+/xLiAd.SqlEx.Repository/nupkgsSymb
+/xLiAd.SqlEx.RepositoryMsSql/bin/Release/netstandard2.0
+/xLiAd.SqlEx.RepositoryMsSql/nupkgs
+/xLiAd.SqlEx.RepositoryMsSql/nupkgsSymb
+/xLiAd.SqlEx.RepositoryMySql/bin/Release/netstandard2.0
+/xLiAd.SqlEx.RepositoryMySql/nupkgs
+/xLiAd.SqlEx.RepositoryMySql/nupkgsSymb

@@ -72,6 +72,18 @@ namespace xLiAd.SqlEx.Repository
         {
             DbTransaction = _tran;
         }
+        /// <summary>
+        /// 初始化仓储
+        /// </summary>
+        /// <param name="connectionHolder"></param>
+        /// <param name="repoXmlProvider"></param>
+        /// <param name="exceptionHandler"></param>
+        /// <param name="throws"></param>
+        public RepositoryBase(IConnectionHolder connectionHolder, RepoXmlProvider repoXmlProvider = null, SqlEx.Core.Core.SqlExExceptionHandler exceptionHandler = null, bool throws = true)
+            : this(connectionHolder.Connection, repoXmlProvider, exceptionHandler, throws)
+        {
+            ConnectionHolder = connectionHolder;
+        }
         private ISql Sql { get; set; }
         private void DoSetSql()
         {
@@ -126,10 +138,22 @@ namespace xLiAd.SqlEx.Repository
                 return cs;
             }
         }
+        private IDbTransaction dbTransaction;
         /// <summary>
         /// 事务对象
         /// </summary>
-        protected virtual IDbTransaction DbTransaction { get; }
+        protected virtual IDbTransaction DbTransaction
+        {
+            get
+            {
+                return ConnectionHolder == null ? dbTransaction : ConnectionHolder.Transaction;
+            }
+            set
+            {
+                dbTransaction = value;
+            }
+        }
+        protected virtual IConnectionHolder ConnectionHolder { get; } = null;
         /// <summary>
         /// 使用这个 CommandSet 方法的方法，不和 RepositoryTrans 使用同一事务对象
         /// </summary>

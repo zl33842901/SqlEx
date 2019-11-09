@@ -23,6 +23,11 @@ namespace xLiAd.SqlEx.RepositoryMsSql
         {
 
         }
+        public RepositoryMsSql(IConnectionHolder connectionHolder, RepoXmlProvider repoXmlProvider = null, SqlEx.Core.Core.SqlExExceptionHandler exceptionHandler = null, bool throws = true)
+            : base(connectionHolder, repoXmlProvider, exceptionHandler, throws)
+        {
+
+        }
 
         protected override ISqlDialect Dialect => new SqlServerDialect();
 

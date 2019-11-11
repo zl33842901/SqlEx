@@ -1153,9 +1153,17 @@ namespace xLiAd.SqlEx.Repository
             {
                 param = ConvertDicToParam(paramDic, null, out string _);
             }
-            var reader = await con.ExecuteReaderAsync(sql, param, commandType: cmdType, transaction: DbTransaction);
-            var result = ReaderToResult<TResult>(reader);
-            reader.Close();
+            IEnumerable<TResult> result;
+            if(typeof(TResult) == typeof(object))//dynamic
+            {
+                result = await con.QueryAsync<TResult>(sql, param, commandType: cmdType, transaction: DbTransaction);
+            }
+            else
+            {
+                var reader = await con.ExecuteReaderAsync(sql, param, commandType: cmdType, transaction: DbTransaction);
+                result = ReaderToResult<TResult>(reader);
+                reader.Close();
+            }
             return result;
         }
         protected virtual List<TResult> ReaderToResult<TResult>(IDataReader reader)
@@ -1182,9 +1190,17 @@ namespace xLiAd.SqlEx.Repository
             {
                 param = ConvertDicToParam(paramDic, null, out string _);
             }
-            var reader = con.ExecuteReader(sql, param, commandType: cmdType, transaction: DbTransaction);
-            var result = ReaderToResult<TResult>(reader);
-            reader.Close();
+            IEnumerable<TResult> result;
+            if(typeof(TResult) == typeof(object))//dynamic
+            {
+                result = con.Query<TResult>(sql, param, commandType: cmdType, transaction: DbTransaction);
+            }
+            else
+            {
+                var reader = con.ExecuteReader(sql, param, commandType: cmdType, transaction: DbTransaction);
+                result = ReaderToResult<TResult>(reader);
+                reader.Close();
+            }
             return result;
         }
         #endregion

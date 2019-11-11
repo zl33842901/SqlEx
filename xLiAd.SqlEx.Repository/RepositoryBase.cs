@@ -1154,7 +1154,9 @@ namespace xLiAd.SqlEx.Repository
                 param = ConvertDicToParam(paramDic, null, out string _);
             }
             var reader = await con.ExecuteReaderAsync(sql, param, commandType: cmdType, transaction: DbTransaction);
-            return ReaderToResult<TResult>(reader);
+            var result = ReaderToResult<TResult>(reader);
+            reader.Close();
+            return result;
         }
         protected virtual List<TResult> ReaderToResult<TResult>(IDataReader reader)
         {
@@ -1181,7 +1183,9 @@ namespace xLiAd.SqlEx.Repository
                 param = ConvertDicToParam(paramDic, null, out string _);
             }
             var reader = con.ExecuteReader(sql, param, commandType: cmdType, transaction: DbTransaction);
-            return ReaderToResult<TResult>(reader);
+            var result = ReaderToResult<TResult>(reader);
+            reader.Close();
+            return result;
         }
         #endregion
         /// <summary>

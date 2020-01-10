@@ -7,6 +7,7 @@
     <Description>a weightlight orm base on dapper and sqlcommon 一个轻量级的基于dapper sqlcommon的orm</Description>
     <Copyright>Copyright © zhanglei 2019</Copyright>
     <PackageProjectUrl>https://github.com/zl33842901/SqlEx</PackageProjectUrl>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -185,7 +185,14 @@ namespace xLiAd.SqlEx.Core
                 return default;
             }
             var data = dr.GetValue(i);
-            return (T)Convert.ChangeType(data, typeof(T));
+            try
+            {
+                return (T)Convert.ChangeType(data, typeof(T));
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static byte ConvertToByte(IDataRecord dr, int i)
         {
@@ -193,8 +200,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetByte(i);
-            return result;
+            try
+            {
+                var result = dr.GetByte(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static short ConvertToInt16(IDataRecord dr, int i)
         {
@@ -202,8 +216,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetInt16(i);
-            return result;
+            try
+            {
+                var result = dr.GetInt16(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static int ConvertToInt32(IDataRecord dr, int i)
         {
@@ -211,7 +232,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            return dr.GetInt32(i);
+            try
+            {
+                var result = dr.GetInt32(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static long ConvertToInt64(IDataRecord dr, int i)
         {
@@ -219,7 +248,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            return dr.GetInt64(i);
+            try
+            {
+                var result = dr.GetInt64(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static float ConvertToFloat(IDataRecord dr, int i)
         {
@@ -227,8 +264,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetFloat(i);
-            return result;
+            try
+            {
+                var result = dr.GetFloat(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static double ConvertToDouble(IDataRecord dr, int i)
         {
@@ -236,8 +280,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetDouble(i);
-            return result;
+            try
+            {
+                var result = dr.GetDouble(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static bool ConvertToBoolean(IDataRecord dr, int i)
         {
@@ -262,8 +313,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetDecimal(i);
-            return result;
+            try
+            {
+                var result = dr.GetDecimal(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static char ConvertToChar(this IDataRecord dr, int i)
         {
@@ -271,8 +329,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetChar(i);
-            return result;
+            try
+            {
+                var result = dr.GetChar(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static string ConvertToString(IDataRecord dr, int i)
         {
@@ -280,8 +345,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetString(i);
-            return result;
+            try
+            {
+                var result = dr.GetString(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static DateTime ConvertToDateTime(IDataRecord dr, int i)
         {
@@ -289,8 +361,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetDateTime(i);
-            return result;
+            try
+            {
+                var result = dr.GetDateTime(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static T ConvertToEnum<T>(IDataRecord dr, int i) where T : struct
         {
@@ -308,8 +387,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetGuid(i);
-            return result;
+            try
+            {
+                var result = dr.GetGuid(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         #endregion
 
@@ -320,8 +406,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var data = dr.GetValue(i);
-            return (T)Convert.ChangeType(data, typeof(T));
+            try
+            {
+                var data = dr.GetValue(i);
+                return (T)Convert.ChangeType(data, typeof(T));
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static byte? ConvertToByteNullable(IDataRecord dr, int i)
         {
@@ -329,8 +422,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetByte(i);
-            return result;
+            try
+            {
+                var result = dr.GetByte(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static short? ConvertToInt16Nullable(IDataRecord dr, int i)
         {
@@ -338,8 +438,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetInt16(i);
-            return result;
+            try
+            {
+                var result = dr.GetInt16(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static int? ConvertToInt32Nullable(IDataRecord dr, int i)
         {
@@ -347,8 +454,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetInt32(i);
-            return result;
+            try
+            {
+                var result = dr.GetInt32(i);
+                return result;
+            }
+            catch(Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static long? ConvertToInt64Nullable(IDataRecord dr, int i)
         {
@@ -356,8 +470,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetInt64(i);
-            return result;
+            try
+            {
+                var result = dr.GetInt64(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static float? ConvertToFloatNullable(IDataRecord dr, int i)
         {
@@ -365,8 +486,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetFloat(i);
-            return result;
+            try
+            {
+                var result = dr.GetFloat(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static double? ConvertToDoubleNullable(IDataRecord dr, int i)
         {
@@ -374,8 +502,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetDouble(i);
-            return result;
+            try
+            {
+                var result = dr.GetDouble(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static bool? ConvertToBooleanNullable(IDataRecord dr, int i)
         {
@@ -385,8 +520,15 @@ namespace xLiAd.SqlEx.Core
             }
             if (dr.GetFieldType(i) == typeof(bool))
             {
-                var result = dr.GetBoolean(i);
-                return result;
+                try
+                {
+                    var result = dr.GetBoolean(i);
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+                }
             }
             else
             {
@@ -400,8 +542,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetDecimal(i);
-            return result;
+            try
+            {
+                var result = dr.GetDecimal(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static char? ConvertToCharNullable(IDataRecord dr, int i)
         {
@@ -409,8 +558,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetChar(i);
-            return result;
+            try
+            {
+                var result = dr.GetChar(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static DateTime? ConvertToDateTimeNullable(IDataRecord dr, int i)
         {
@@ -418,8 +574,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetDateTime(i);
-            return result;
+            try
+            {
+                var result = dr.GetDateTime(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         public static T? ConvertToEnumNullable<T>(IDataRecord dr, int i) where T : struct
         {
@@ -437,8 +600,15 @@ namespace xLiAd.SqlEx.Core
             {
                 return default;
             }
-            var result = dr.GetGuid(i);
-            return result;
+            try
+            {
+                var result = dr.GetGuid(i);
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("exception column index: " + i + "; name: " + dr.GetName(i), e);
+            }
         }
         #endregion
     }

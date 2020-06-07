@@ -248,5 +248,14 @@ namespace xLiAd.SqlEx.RepositoryMsSql.Test
                     Assert.True(false);
             }
         }
+        /// <summary>
+        /// 字段类型不对应的测试
+        /// </summary>
+        [Fact]
+        public void QueryWhenField()
+        {
+            var repository = new RepositoryMsSql<Articles>(Conn);
+            var result = repository.All();
+        }
     }
 }

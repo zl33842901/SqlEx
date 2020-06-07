@@ -80,6 +80,8 @@ namespace xLiAd.SqlEx.RepositoryMsSql.Test
         public int DictID { get; set; }
         [NotMapped]
         public string DictName { get; set; }
+
+        public string CreateTime { get; set; }
     }
     public class Author
     {

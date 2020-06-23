@@ -1022,27 +1022,24 @@ namespace xLiAd.SqlEx.Repository
         }
         #endregion
         /// <summary>
-        /// 把参数字典转换为动态参数， 并替换语句中的转义参数名（如果有的话）
+        /// 替换语句中的转义参数名（如果有的话）XML查询时使用
         /// </summary>
         /// <param name="dic"></param>
         /// <param name="sqlToReplace"></param>
         /// <param name="sqlReplaced"></param>
         /// <returns></returns>
-        private DynamicParameters ConvertDicToParam(Dictionary<string, string> dic, string sqlToReplace, out string sqlReplaced)
+        private string ReplaceXmlSqlParam(Dictionary<string, string> dic, string sqlToReplace)
         {
-            sqlReplaced = sqlToReplace;
-            DynamicParameters param = null;
+            string sqlReplaced = sqlToReplace;
             if (dic != null && dic.Count > 0)
             {
-                param = new DynamicParameters();
                 foreach (var d in dic)
                 {
-                    param.Add($"@{d.Key}", d.Value);
                     if (!string.IsNullOrWhiteSpace(sqlToReplace))
                         sqlReplaced = sqlReplaced.Replace($"#{{{d.Key}}}", $"@{d.Key}");
                 }
             }
-            return param;
+            return sqlReplaced;
         }
         #region ExecuteSql
         /// <summary>
@@ -1054,8 +1051,6 @@ namespace xLiAd.SqlEx.Repository
         /// <returns></returns>
         public virtual async Task<bool> ExecuteSqlAsync(string sql, object param = null, CommandType cmdType = CommandType.Text)
         {
-            if(param is Dictionary<string, string> dic)
-                param = ConvertDicToParam(dic, null, out string _);
             return await con.ExecuteAsync(sql, param, commandType: cmdType, transaction: DbTransaction) > 0;
         }
         /// <summary>
@@ -1067,8 +1062,6 @@ namespace xLiAd.SqlEx.Repository
         /// <returns></returns>
         public virtual bool ExecuteSql(string sql, object param = null, CommandType cmdType = CommandType.Text)
         {
-            if (param is Dictionary<string, string> dic)
-                param = ConvertDicToParam(dic, null, out string _);
             return con.Execute(sql, param, commandType: cmdType, transaction: DbTransaction) > 0;
         }
         #endregion
@@ -1104,8 +1097,7 @@ namespace xLiAd.SqlEx.Repository
         /// <returns></returns>
         public virtual async Task<TResult> GetScalarAsync<TResult>(string sql, Dictionary<string, string> dic = null)
         {
-            DynamicParameters param = ConvertDicToParam(dic, null, out string _);
-            var reader = await con.ExecuteReaderAsync(sql, param, transaction: DbTransaction);
+            var reader = await con.ExecuteReaderAsync(sql, dic, transaction: DbTransaction);
             var Parser = TypeConvert.GetSerializer<TResult>(TypeMapper, reader);
             if (reader.Read())
             {
@@ -1125,8 +1117,7 @@ namespace xLiAd.SqlEx.Repository
         /// <returns></returns>
         public virtual TResult GetScalar<TResult>(string sql, Dictionary<string, string> dic = null)
         {
-            DynamicParameters param = ConvertDicToParam(dic, null, out string _);
-            var reader = con.ExecuteReader(sql, param, transaction: DbTransaction);
+            var reader = con.ExecuteReader(sql, dic, transaction: DbTransaction);
             var Parser = TypeConvert.GetSerializer<TResult>(TypeMapper, reader);
             if (reader.Read())
             {
@@ -1149,32 +1140,8 @@ namespace xLiAd.SqlEx.Repository
         /// <returns></returns>
         public virtual async Task<IEnumerable<TResult>> QueryBySqlAsync<TResult>(string sql, object param = null, CommandType cmdType = CommandType.Text)
         {
-            if(param is Dictionary<string, string> paramDic)
-            {
-                param = ConvertDicToParam(paramDic, null, out string _);
-            }
-            IEnumerable<TResult> result;
-            if(typeof(TResult) == typeof(object))//dynamic
-            {
-                result = await con.QueryAsync<TResult>(sql, param, commandType: cmdType, transaction: DbTransaction);
-            }
-            else
-            {
-                var reader = await con.ExecuteReaderAsync(sql, param, commandType: cmdType, transaction: DbTransaction);
-                result = ReaderToResult<TResult>(reader);
-                reader.Close();
-            }
-            return result;
-        }
-        protected virtual List<TResult> ReaderToResult<TResult>(IDataReader reader)
-        {
-            var Parser = TypeConvert.GetSerializer<TResult>(TypeMapper, reader);
-            var result = new List<TResult>();
-            while (reader.Read())
-            {
-                result.Add(Parser(reader));
-            }
-            return result;
+            var result = await con.QueryAsync<TResult>(sql, param, commandType: cmdType, transaction: DbTransaction);
+            return result.ToList();
         }
         /// <summary>
         /// 根据SQL语句，或存储过程 查询实体
@@ -1186,22 +1153,8 @@ namespace xLiAd.SqlEx.Repository
         /// <returns></returns>
         public virtual IEnumerable<TResult> QueryBySql<TResult>(string sql, object param = null, CommandType cmdType = CommandType.Text)
         {
-            if (param is Dictionary<string, string> paramDic)
-            {
-                param = ConvertDicToParam(paramDic, null, out string _);
-            }
-            IEnumerable<TResult> result;
-            if(typeof(TResult) == typeof(object))//dynamic
-            {
-                result = con.Query<TResult>(sql, param, commandType: cmdType, transaction: DbTransaction);
-            }
-            else
-            {
-                var reader = con.ExecuteReader(sql, param, commandType: cmdType, transaction: DbTransaction);
-                result = ReaderToResult<TResult>(reader);
-                reader.Close();
-            }
-            return result;
+            var result = con.Query<TResult>(sql, param, commandType: cmdType, transaction: DbTransaction);
+            return result.ToList();
         }
         #endregion
         /// <summary>
@@ -1243,7 +1196,7 @@ namespace xLiAd.SqlEx.Repository
             XmlSqlModel xsm = CheckXml(id, out string msg);
             if (xsm == null)
                 throw new Exception(msg);
-            DynamicParameters param = ConvertDicToParam(dic, xsm.Sql, out string sql);
+            string sql = ReplaceXmlSqlParam(dic, xsm.Sql);
             return await ExecuteSqlAsync(sql, dic);
         }
         /// <summary>
@@ -1257,7 +1210,7 @@ namespace xLiAd.SqlEx.Repository
             XmlSqlModel xsm = CheckXml(id, out string msg);
             if (xsm == null)
                 throw new Exception(msg);
-            DynamicParameters param = ConvertDicToParam(dic, xsm.Sql, out string sql);
+            string sql = ReplaceXmlSqlParam(dic, xsm.Sql);
             return ExecuteSql(sql, dic);
         }
         #endregion
@@ -1274,7 +1227,7 @@ namespace xLiAd.SqlEx.Repository
             XmlSqlModel xsm = CheckXml(id, out string msg);
             if (xsm == null)
                 throw new Exception(msg);
-            DynamicParameters param = ConvertDicToParam(dic, xsm.Sql, out string sql);
+            string sql = ReplaceXmlSqlParam(dic, xsm.Sql);
             return await QueryBySqlAsync<TResult>(sql, dic);
         }
         /// <summary>
@@ -1289,7 +1242,7 @@ namespace xLiAd.SqlEx.Repository
             XmlSqlModel xsm = CheckXml(id, out string msg);
             if (xsm == null)
                 throw new Exception(msg);
-            DynamicParameters param = ConvertDicToParam(dic, xsm.Sql, out string sql);
+            string sql = ReplaceXmlSqlParam(dic, xsm.Sql);
             return QueryBySql<TResult>(sql, dic);
         }
         #endregion

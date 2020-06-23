@@ -9,7 +9,7 @@ using System.Collections;
 using System.Data.Common;
 using System.Threading;
 
-namespace xLiAd.SqlEx.Core
+namespace xLiAd.SqlEx.Core.暂时还是不要使用这个类了Dapper做的准备参数的功能我这个类还做不了太复杂了
 {
     /// <summary>
     /// Extended connection
@@ -30,18 +30,125 @@ namespace xLiAd.SqlEx.Core
         /// </summary>
         public static IEnumerable<T> ExecuteQuery<T>(this IDbConnection connection, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
         {
-            using (var cmd = connection.CreateCommand())
+            using var cmd = connection.CreateCommand();
+            Initialize(cmd, transaction, sql, param, commandTimeout, commandType);
+            using (var reader = cmd.ExecuteReader())
             {
-                Initialize(cmd, transaction, sql, param, commandTimeout, commandType);
-                using (var reader = cmd.ExecuteReader())
+                var handler = TypeConvert.GetSerializer<T>(TypeMapper, reader);
+                while (reader.Read())
                 {
-                    var handler = TypeConvert.GetSerializer<T>(TypeMapper, reader);
-                    while (reader.Read())
-                    {
-                        yield return handler(reader);
-                    }
+                    yield return handler(reader);
                 }
             }
+        }
+
+        public static async Task<IEnumerable<T>> ExecuteQueryAsync<T>(this IDbConnection connection, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            using var cmd = connection.CreateCommand();
+            if (cmd is DbCommand dbcmd)
+            {
+                Initialize(dbcmd, transaction, sql, param, commandTimeout, commandType);
+                using (var reader = await dbcmd.ExecuteReaderAsync())
+                {
+                    var handler = TypeConvert.GetSerializer<T>(TypeMapper, reader);
+                    List<T> result = new List<T>();
+                    while (reader.Read())
+                    {
+                        result.Add(handler(reader));
+                    }
+                    return result;
+                }
+            }
+            else
+                throw new Exception("只有 DbCommand 可以异步查询");
+        }
+
+        public static IDataReader ExecuteReader(this IDbConnection connection, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            using var cmd = connection.CreateCommand();
+            Initialize(cmd, transaction, sql, param, commandTimeout, commandType);
+            if (connection.State == ConnectionState.Closed)
+                connection.Open();
+            var reader = cmd.ExecuteReader();
+            return reader;
+        }
+        public static async Task<IDataReader> ExecuteReaderAsync(this IDbConnection connection, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            using var cmd = connection.CreateCommand();
+            if (cmd is DbCommand dbcmd)
+            {
+                Initialize(dbcmd, transaction, sql, param, commandTimeout, commandType);
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+                var reader = await dbcmd.ExecuteReaderAsync();
+                return reader;
+            }
+            else
+                throw new Exception("只有 DbCommand 可以异步查询");
+        }
+        public static int Execute(this IDbConnection connection, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            using var cmd = connection.CreateCommand();
+            Initialize(cmd, transaction, sql, param, commandTimeout, commandType);
+            if (connection.State == ConnectionState.Closed)
+                connection.Open();
+            var result = cmd.ExecuteNonQuery();
+            return result;
+        }
+
+        public static async Task<int> ExecuteAsync(this IDbConnection connection, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            using var cmd = connection.CreateCommand();
+            if (cmd is DbCommand dbcmd)
+            {
+                Initialize(dbcmd, transaction, sql, param, commandTimeout, commandType);
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+                var result = await dbcmd.ExecuteNonQueryAsync();
+                return result;
+            }
+            else
+                throw new Exception("只有 DbCommand 可以异步查询");
+        }
+
+        public static T ExecuteScalar<T>(this IDbConnection connection, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            using var cmd = connection.CreateCommand();
+            Initialize(cmd, transaction, sql, param, commandTimeout, commandType);
+            if (connection.State == ConnectionState.Closed)
+                connection.Open();
+            var result = cmd.ExecuteScalar();
+            return Parse<T>(result);
+        }
+        public static async Task<T> ExecuteScalarAsync<T>(this IDbConnection connection, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
+        {
+            using var cmd = connection.CreateCommand();
+            if (cmd is DbCommand dbcmd)
+            {
+                Initialize(dbcmd, transaction, sql, param, commandTimeout, commandType);
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+                var result = await dbcmd.ExecuteScalarAsync();
+                return Parse<T>(result);
+            }
+            else
+                throw new Exception("只有 DbCommand 可以异步查询");
+        }
+        private static T Parse<T>(object value)
+        {
+            if (value == null || value is DBNull) return default(T);
+            if (value is T) return (T)value;
+            var type = typeof(T);
+            type = Nullable.GetUnderlyingType(type) ?? type;
+            if (type.IsEnum)
+            {
+                if (value is float || value is double || value is decimal)
+                {
+                    value = Convert.ChangeType(value, Enum.GetUnderlyingType(type), System.Globalization.CultureInfo.InvariantCulture);
+                }
+                return (T)Enum.ToObject(type, value);
+            }
+            return (T)Convert.ChangeType(value, type, System.Globalization.CultureInfo.InvariantCulture);
         }
         ///// <summary>
         ///// Executes Multi query, returning the data typed as valueTuple.
@@ -135,6 +242,14 @@ namespace xLiAd.SqlEx.Core
             else if (param is Dictionary<string, object> keyValues)
             {
                 foreach (var item in keyValues)
+                {
+                    var parameter = CreateParameter(cmd, item.Key, item.Value);
+                    dbParameters.Add(parameter);
+                }
+            }
+            else if (param is Dictionary<string, string> stringkeyValues)
+            {
+                foreach (var item in stringkeyValues)
                 {
                     var parameter = CreateParameter(cmd, item.Key, item.Value);
                     dbParameters.Add(parameter);

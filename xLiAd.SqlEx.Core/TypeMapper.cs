@@ -48,7 +48,8 @@ namespace xLiAd.SqlEx.Core
                 {
                     return item;
                 }
-                else if (SqlMapper.MatchNamesWithUnderscores && item.DataName.Replace("_", "").Equals(parameterInfo.Name, StringComparison.OrdinalIgnoreCase))
+                else if (//SqlMapper.MatchNamesWithUnderscores && 
+                    item.DataName.Replace("_", "").Equals(parameterInfo.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     return item;
                 }
@@ -66,7 +67,8 @@ namespace xLiAd.SqlEx.Core
                 {
                     return item;
                 }
-                else if (SqlMapper.MatchNamesWithUnderscores && item.Name.Equals(dataInfo.DataName.Replace("_", ""), StringComparison.OrdinalIgnoreCase))
+                else if (//SqlMapper.MatchNamesWithUnderscores && 
+                    item.Name.Equals(dataInfo.DataName.Replace("_", ""), StringComparison.OrdinalIgnoreCase))
                 {
                     return item;
                 }

@@ -22,13 +22,13 @@ namespace xLiAd.SqlEx.Core.Core.SetQ
         {
             SqlProvider.FormatCount();
             SetSql();
-            return await DbCon.QuerySingleAsync<int>(SqlProvider.SqlString, SqlProvider.Params);
+            return await DbCon.ExecuteScalarAsync<int>(SqlProvider.SqlString, SqlProvider.Params);
         }
         public int Count()
         {
             SqlProvider.FormatCount();
             SetSql();
-            return DbCon.QuerySingle<int>(SqlProvider.SqlString, SqlProvider.Params);
+            return DbCon.ExecuteScalar<int>(SqlProvider.SqlString, SqlProvider.Params);
         }
         #endregion
         #region Sum
@@ -36,13 +36,13 @@ namespace xLiAd.SqlEx.Core.Core.SetQ
         {
             SqlProvider.FormatSum(sumExpression);
             SetSql();
-            return await DbCon.QuerySingleAsync<TResult>(SqlProvider.SqlString, SqlProvider.Params);
+            return await DbCon.ExecuteScalarAsync<TResult>(SqlProvider.SqlString, SqlProvider.Params);
         }
         public TResult Sum<TResult>(Expression<Func<T, TResult>> sumExpression)
         {
             SqlProvider.FormatSum(sumExpression);
             SetSql();
-            return DbCon.QuerySingle<TResult>(SqlProvider.SqlString, SqlProvider.Params);
+            return DbCon.ExecuteScalar<TResult>(SqlProvider.SqlString, SqlProvider.Params);
         }
         #endregion
         #region Exists
@@ -50,13 +50,13 @@ namespace xLiAd.SqlEx.Core.Core.SetQ
         {
             SqlProvider.FormatExists();
             SetSql();
-            return await DbCon.QuerySingleAsync<int>(SqlProvider.SqlString, SqlProvider.Params) == 1;
+            return await DbCon.ExecuteScalarAsync<int>(SqlProvider.SqlString, SqlProvider.Params) == 1;
         }
         public bool Exists()
         {
             SqlProvider.FormatExists();
             SetSql();
-            return DbCon.QuerySingle<int>(SqlProvider.SqlString, SqlProvider.Params) == 1;
+            return DbCon.ExecuteScalar<int>(SqlProvider.SqlString, SqlProvider.Params) == 1;
         }
         #endregion
     }

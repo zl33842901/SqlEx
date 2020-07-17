@@ -72,6 +72,23 @@ namespace xLiAd.SqlEx.Repository
         /// <returns></returns>
         Task<List<TResult>> WhereSelectAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector);
         /// <summary>
+        /// 根据条件获取数据并投影。
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="predicate">条件表达式</param>
+        /// <param name="selector">投影表达式</param>
+        /// <returns></returns>
+        Task<List<TResult>> WhereSelectDistinctAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector);
+        /// <summary>
+        /// 根据条件获取数据并投影。
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="predicate">条件表达式</param>
+        /// <param name="selector">投影表达式</param>
+        /// <returns></returns>
+        List<TResult> WhereSelectDistinct<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector);
+
+        /// <summary>
         /// 根据条件排序查询
         /// </summary>
         /// <typeparam name="TKey"></typeparam>

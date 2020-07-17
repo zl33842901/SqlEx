@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using Xunit;
 using xLiAd.SqlEx.Core.Helper;
+using xLiAd.SqlEx.Repository;
 
 namespace xLiAd.SqlEx.RepositoryMsSql.Test
 {
@@ -176,6 +177,21 @@ namespace xLiAd.SqlEx.RepositoryMsSql.Test
 
             var ll2 = repository.WhereSelect(x => x.DictName.Contains("哈哈") && x.Deleted, x => new { x.DictName, x.DictID }).ToDictionary(x => x.DictID, x => x.DictName);
         }
+
+        [Fact]
+        public void TestWhereSelectDistinct()
+        {
+            IRepository<DictInfo> repository = new RepositoryMsSql<DictInfo>(Conn);
+            var resultNoDistinct = repository.WhereSelect(x => true, x => x.DictName);
+            var resultDistinct = repository.WhereSelectDistinct(x => true, x => x.DictName);
+            foreach(var item in resultDistinct)
+            {
+                bool b = resultNoDistinct.Contains(item);
+                Assert.True(b);
+            }
+            Assert.True(resultDistinct.Count <= resultNoDistinct.Count);
+        }
+
         [Fact]
         public void TestWhereOrderSelect()
         {

@@ -34,7 +34,7 @@ namespace xLiAd.SqlEx.Core
 
         private SqlProvider<T> FormatGetDo(IWhereExpression whereParams, IFieldAnyExpression fieldAnyExpression)
         {
-            var selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(typeof(T).GetPropertiesInDb(true), Context.QuerySet.SelectExpression, 1, false);
+            var selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(typeof(T).GetPropertiesInDb(true), Context.QuerySet.SelectExpression, 1, Context.QuerySet.IsDistinct);
 
             var fromTableSql = FormatTableName();
 
@@ -75,9 +75,9 @@ namespace xLiAd.SqlEx.Core
         {
             string selectSql;
             if (selector == null)
-                selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(typeof(T), Context.QuerySet.TopNum, false, Context.QuerySet.SelectExpression);
+                selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(typeof(T), Context.QuerySet.TopNum, Context.QuerySet.IsDistinct, Context.QuerySet.SelectExpression);
             else
-                selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(typeof(T), Context.QuerySet.TopNum, false, selector);
+                selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(typeof(T), Context.QuerySet.TopNum, Context.QuerySet.IsDistinct, selector);
 
             var fromTableSql = FormatTableName();
 
@@ -131,7 +131,7 @@ namespace xLiAd.SqlEx.Core
         //}
         public SqlProvider<T> FormatToListZhanglei(Type type, IFieldAnyExpression fieldAnyExpression = null)
         {
-            var selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(type, Context.QuerySet.TopNum, false, Context.QuerySet.SelectExpression);
+            var selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(type, Context.QuerySet.TopNum, Context.QuerySet.IsDistinct, Context.QuerySet.SelectExpression);
 
             var fromTableSql = FormatTableName();
 
@@ -166,7 +166,7 @@ namespace xLiAd.SqlEx.Core
             if (string.IsNullOrEmpty(orderbySql))
                 throw new Exception("分页查询需要排序条件");
 
-            var selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(type, pageSize, false, Context.QuerySet.SelectExpression);
+            var selectSql = ResolveExpression.Instance(Dialect).ResolveSelect(type, pageSize, Context.QuerySet.IsDistinct, Context.QuerySet.SelectExpression);
 
             var fromTableSql = FormatTableName();
 

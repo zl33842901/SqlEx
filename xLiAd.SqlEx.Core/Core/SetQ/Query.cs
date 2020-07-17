@@ -46,6 +46,15 @@ namespace xLiAd.SqlEx.Core.Core.SetQ
 
         protected DataBaseContext<T> SetContext { get; set; }
         /// <summary>
+        /// 是否 Distinct
+        /// </summary>
+        public bool IsDistinct { get; protected set; }
+        public Query<T> Distinct()
+        {
+            this.IsDistinct = true;
+            return this;
+        }
+        /// <summary>
         /// 新建一个查询器
         /// </summary>
         /// <param name="conn">数据库连接</param>

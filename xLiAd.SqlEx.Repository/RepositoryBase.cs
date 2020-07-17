@@ -272,6 +272,35 @@ namespace xLiAd.SqlEx.Repository
             DoSetSql(qs);
             return rst;
         }
+
+        /// <summary>
+        /// 根据条件获取数据并投影。
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="predicate">条件表达式</param>
+        /// <param name="selector">投影表达式</param>
+        /// <returns></returns>
+        public async Task<List<TResult>> WhereSelectDistinctAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
+        {
+            var qs = QuerySet.Where(predicate).Select(selector).Distinct();
+            var rst = await qs.ToListAsync();
+            DoSetSql(qs);
+            return rst;
+        }
+        /// <summary>
+        /// 根据条件获取数据并投影。
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="predicate">条件表达式</param>
+        /// <param name="selector">投影表达式</param>
+        /// <returns></returns>
+        public List<TResult> WhereSelectDistinct<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector)
+        {
+            var qs = QuerySet.Where(predicate).Select(selector).Distinct();
+            var rst = qs.ToList();
+            DoSetSql(qs);
+            return rst;
+        }
         #endregion
         #region WhereOrder
         /// <summary>

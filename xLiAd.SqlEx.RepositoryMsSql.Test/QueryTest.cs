@@ -193,6 +193,15 @@ namespace xLiAd.SqlEx.RepositoryMsSql.Test
         }
 
         [Fact]
+        public void TestWhereDistinct()
+        {
+            IRepository<DictInfo> repository = new RepositoryMsSql<DictInfo>(Conn);
+            var resultDistinct = repository.WhereDistinct(x => true, x => x.DictName, x => x.DictType);
+            var resultDistinct2 = repository.WhereDistinct(x => true);
+            Assert.True(resultDistinct.Count <= resultDistinct2.Count);
+        }
+
+        [Fact]
         public void TestWhereOrderSelect()
         {
             var repository = new RepositoryMsSql<DictInfo>(Conn);

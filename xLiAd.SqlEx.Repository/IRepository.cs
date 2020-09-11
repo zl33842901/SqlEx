@@ -42,6 +42,18 @@ namespace xLiAd.SqlEx.Repository
         /// <returns></returns>
         Task<List<T>> WhereAsync(Expression<Func<T, bool>> predicate);
         /// <summary>
+        /// 根据条件获取数据
+        /// </summary>
+        /// <param name="predicate">条件表达式</param>
+        /// <returns></returns>
+        Task<List<T>> WhereDistinctAsync(Expression<Func<T, bool>> predicate);
+        /// <summary>
+        /// 根据条件获取数据
+        /// </summary>
+        /// <param name="predicate">条件表达式</param>
+        /// <returns></returns>
+        List<T> WhereDistinct(Expression<Func<T, bool>> predicate);
+        /// <summary>
         /// 只获取指定字段
         /// </summary>
         /// <param name="predicate"></param>
@@ -55,6 +67,20 @@ namespace xLiAd.SqlEx.Repository
         /// <param name="efdbd"></param>
         /// <returns></returns>
         Task<List<T>> WhereAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] efdbd);
+        /// <summary>
+        /// 只获取指定字段
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="efdbd"></param>
+        /// <returns></returns>
+        Task<List<T>> WhereDistinctAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] efdbd);
+        /// <summary>
+        /// 只获取指定字段
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="efdbd"></param>
+        /// <returns></returns>
+        List<T> WhereDistinct(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] efdbd);
         /// <summary>
         /// 根据条件获取数据并投影。
         /// </summary>

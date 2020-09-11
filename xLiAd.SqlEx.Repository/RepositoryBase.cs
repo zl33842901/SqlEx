@@ -19,7 +19,7 @@ namespace xLiAd.SqlEx.Repository
     /// 仓储基类
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class RepositoryBase<T>
+    public abstract class RepositoryBase<T> : IRepository<T>
     {
         /// <summary>
         /// 数据库连接
@@ -216,6 +216,28 @@ namespace xLiAd.SqlEx.Repository
             DoSetSql();
             return rst;
         }
+        /// <summary>
+        /// 根据条件获取数据
+        /// </summary>
+        /// <param name="predicate">条件表达式</param>
+        /// <returns></returns>
+        public async Task<List<T>> WhereDistinctAsync(Expression<Func<T, bool>> predicate)
+        {
+            var rst = await QuerySet.Where(predicate).Distinct().ToListAsync();
+            DoSetSql();
+            return rst;
+        }
+        /// <summary>
+        /// 根据条件获取数据
+        /// </summary>
+        /// <param name="predicate">条件表达式</param>
+        /// <returns></returns>
+        public List<T> WhereDistinct(Expression<Func<T, bool>> predicate)
+        {
+            var rst = QuerySet.Where(predicate).Distinct().ToList();
+            DoSetSql();
+            return rst;
+        }
         #endregion
         #region Where
         /// <summary>
@@ -239,6 +261,30 @@ namespace xLiAd.SqlEx.Repository
         public List<T> Where(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] efdbd)
         {
             var rst = QuerySet.Where(predicate).ToList(efdbd);
+            DoSetSql();
+            return rst;
+        }
+        /// <summary>
+        /// 只获取指定字段
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="efdbd"></param>
+        /// <returns></returns>
+        public async Task<List<T>> WhereDistinctAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] efdbd)
+        {
+            var rst = await QuerySet.Where(predicate).Distinct().ToListAsync(efdbd);
+            DoSetSql();
+            return rst;
+        }
+        /// <summary>
+        /// 只获取指定字段
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="efdbd"></param>
+        /// <returns></returns>
+        public List<T> WhereDistinct(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] efdbd)
+        {
+            var rst = QuerySet.Where(predicate).Distinct().ToList(efdbd);
             DoSetSql();
             return rst;
         }
